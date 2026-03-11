@@ -17,3 +17,9 @@ FirstRep is a web application that helps new gym-goers generate workout regimens
 - Generate workout programs automatically
 - Improve UI/UX
 - Add more fitness metrics
+
+## Running Locally
+
+1. Clone the repository
+2. Install dependencies
+3. Run: python app.py
