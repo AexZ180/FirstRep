@@ -20,11 +20,155 @@ class Onboarding(db.Model):
     days_per_week = db.Column(db.Integer, nullable = False)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
 
+
+#workout logic here
+def generate_workout_plan(goal,days_per_week):
+    if goal == "muscle_gain":
+        if days_per_week == 2:
+            return {
+                "title": "2-Day Muscle Gain Plan",
+                "days":[
+                {
+                "day": "Day 1",
+                "focus": "Full Body A",
+                "exercises": ["Squat","Push-up", "Lat Pulldown", "Plank"]
+                },
+            {
+                "day": "Day 2",
+                "focus": "Full Body B",
+                "exercises": ["Deadlift", "Dumbbell Bench Press", "Seated Row", "Lunges"]
+            }
+        ]
+    }
+        elif days_per_week == 3:
+            return {
+                "title": "3-Day Muscle Gain Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Push",
+                        "exercises": ["Bench Press", "Shoulder Press", "Tricep Pushdown"]
+                    },
+                    {
+                        "day": "Day 2",
+                        "focus": "Pull",
+                        "exercises": ["Lat Pulldown", "Seated Row", "Bicep Curl"]
+                    },
+                    {
+                        "day": "Day 3",
+                        "focus": "Legs",
+                        "exercises": ["Squat", "Romanian Deadlift", "Calf Raise"]
+                    }
+                ]
+            }
+        
+    elif goal == "weight_loss":
+        if days_per_week == 2:
+            return {
+                "title": "2-Day Weight Loss Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Full Body + Cardio",
+                        "exercises": ["Goblet Squat", "Push-Up", "Row", "15-Min Walk"]
+                    },
+                    {
+                        "day" : "Day 2",
+                        "focus": "Full Body + Cardio",
+                        "exercises":["Lunge", "Dumbbell Press", "Lat Pulldown", "15-Min Bike"]
+                    }
+                ]
+            }
+        elif days_per_week == 3:
+            return {
+                "title": "3-Day Weight Loss Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Upper Body",
+                        "exercises": ["Push-Up", "Shoulder Press", "Lat Pulldown"]
+                    },
+                    {
+                        "day": "Day 2",
+                        "focus": "Lower Body + Cardio",
+                        "exercises": ["Squat", "Lunge", "20-Min Walk"]                        
+                    },
+                    {
+                        "day": "Day 3",
+                        "focus": "Full Body",
+                        "exercises": ["Deadlift", "Bench Press", "Row"]
+                    }
+                ]
+            }
+        
+    elif goal == "general_fitness":
+        if days_per_week == 2:
+            return {
+                "title": "2-Day General Fitness Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Full Body A",
+                        "exercises":["Bodyweight Squat", "Push-Up", "Row", "Plank"]
+                    },
+                    {
+                        "day": "Day 2",
+                        "focus": "Full Body B",
+                        "exercises": ["Step-Up", "Shoulder Press", "Lat Pulldown", "Dead Bug"]
+                    }
+                ]
+            }
+        elif days_per_week == 3:
+            return {
+                "title": "3-Day General Fitness Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Upper Body",
+                        "exercises":["Push-Up","Shoulder Press", "Row"]
+                    },
+                    {
+                        "day": "Day 2",
+                        "focus": "Lower Body",
+                        "exercises": ["Squat", "Lunge", "Glute Bridge"]
+                    },
+                    {
+                        "day" : "Day 3",
+                        "focus": "Full Body",
+                        "exercises":["Deadlift", "Bench Press", "Lat Pulldown"]
+                    }
+                ]
+            }
+        
+    return{
+        "title": "Starter Workout Plan",
+        "days":[
+            {
+                "day": "Day 1",
+                "focus": "Full Body",
+                "exercises": ["Squat", "Push-Up", "Row", "Plank"]
+            }
+        ]
+    }
+
+
+
 #route to home page
 @app.route("/")
 def home():
     recent_onboarding = Onboarding.query.order_by(Onboarding.created_at.desc()).first()
     return render_template("home.html", onboarding = recent_onboarding)
+
+#route to workout plan page
+@app.route("/workout-plan")
+def workoutplan():
+    recent_onboarding = Onboarding.query.order_by(Onboarding.created_at.desc()).first()
+    if not recent_onboarding:
+        return redirect(url_for("onboarding"))
+    
+    plan = generate_workout_plan(recent_onboarding.goal, recent_onboarding.days_per_week)
+    return render_template("workout_plan.html", plan = plan, onboarding = recent_onboarding)
+
 
 #route to onboarding page
 @app.route("/onboarding", methods = ["GET", "POST"])
@@ -34,7 +178,7 @@ def onboarding():
         str_weight = request.form.get("weight","").strip()
         str_days_per_week = request.form.get("days_per_week","").strip()
 
-        VALID_GOALS ={"muscle_gain", "weight_loss", "general_fit"}
+        VALID_GOALS ={"muscle_gain", "weight_loss", "general_fitness"}
 
         if not goal:
             return render_template("onboarding.html", error="Please enter a fitness goal.")
@@ -65,7 +209,7 @@ def onboarding():
         db.session.add(new_entry)
         db.session.commit()
 
-        return redirect(url_for("home"))
+        return redirect(url_for("workoutplan"))
     return render_template("onboarding.html")
 
 if __name__ == "__main__":
