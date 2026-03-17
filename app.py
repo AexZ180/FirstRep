@@ -10,67 +10,62 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-def init_db():
-    # Initialize the database and create the necessary tables
-    con = get_db_connection()
-    cursor = con.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            goal TEXT NOT NULL,
-            weight INTEGER NOT NULL,
-            days_per_week INTEGER NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    con.commit()
-    con.close()
+#database model for users
+class Onboarding(db.Model):
+    __tablename__ = "Onboarding"
 
-@app.get("/")
+    id = db.Column(db.Integer, primary_key = True)
+    #Might want to extend character count.
+    goal = db.Column(db.String(100), nullable = False)
+    weight = db.Column(db.Integer, nullable = False)
+    days_per_week = db.Column(db.Integer, nullable = False)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+
+#route to home page
+@app.route("/")
 def home():
-    con = get_db_connection()
-    cur = con.cursor()
-    cur.execute("""
-        SELECT goal, weight, days_per_week FROM onboarding ORDER BY created_at DESC LIMIT 1
-                """)
-    row = cur.fetchone()
-    con.close()
-    return render_template("home.html", onboarding=row)
+    recent_onboarding = Onboarding.query.order_by(Onboarding.created_at.desc()).first()
+    return render_template("home.html", onboarding = recent_onboarding)
 
-@app.route("/onboarding", methods = ["GET","POST"])
+#route to onboarding page
+@app.route("/onboarding", methods = ["GET", "POST"])
 def onboarding():
     if request.method == "POST":
-        goal = request.form.get("goal", "")
-        weight_raw = request.form.get("weight", "")
-        days_per_week_raw = request.form.get("days_per_week", "")
+        goal = request.form.get("goal","").strip()
+        str_weight = request.form.get("weight","").strip()
+        str_days_per_week = request.form.get("days_per_week","").strip()
 
         if not goal:
-            return render_template("onboarding.html", error= "Please select a fitness goal.")
-        try:
-            weight = int(weight_raw)
-        except ValueError:
-            return render_template("onboarding.html", error="Please enter valid numbers for weight.")
+            return render_template("onboarding.html", error="Please enter a fitness goal.")
         
         try:
-            days_per_week = int(days_per_week_raw)
-            if(days_per_week < 1 or days_per_week > 7):
-                return render_template("onboarding.html", error="Please enter a number between 1 and 7 for days per week.")
+            weight = int(str_weight)
+            if weight <= 0:
+                return render_template("onboarding.html", error="Please enter a valid weight.")
         except ValueError:
-            return render_template("onboarding.html", error="Please enter valid numbers for days per week.")
+            return render_template("onboarding.html", error="Please enter a valid number for weight")
         
-        con = get_db_connection()
-        cur = con.cursor()
-        cur.execute("""
-            INSERT INTO users (goal, weight, days_per_week) VALUES (?, ?, ?)
-        """, (goal, weight, days_per_week))
-        con.commit()
-        con.close()
+        try:
+            days_per_week = int(str_days_per_week)
+            if days_per_week < 1 or days_per_week > 7:
+                return render_template("onboarding.html", error="Please enter a number between 1 and 7 for number of days per week.")
+            
+        except ValueError:
+            return render_template("onboarding.html",error="Please enter a valid number for number of days per week.")
+        
+        new_entry = Onboarding(
+            goal = goal,
+            weight = weight,
+            days_per_week = days_per_week
+        )
+
+        db.session.add(new_entry)
+        db.session.commit()
 
         return redirect(url_for("home"))
-        # Process the form data and create a workout plan
-
     return render_template("onboarding.html")
 
 if __name__ == "__main__":
-    init_db()  # Initialize the database before running the app
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
