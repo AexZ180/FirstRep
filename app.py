@@ -1,11 +1,14 @@
-import sqlite3
+
 from flask import Flask, render_template, request, url_for, redirect
+from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
-DB_PATH = "firstrep.db"
-def get_db_connection():
-    # Connect to the SQLite database
-    con = sqlite3.connect(DB_PATH)
-    return con
+
+#SQLite database file in project folder
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://firstrep.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
 
 def init_db():
     # Initialize the database and create the necessary tables
@@ -58,7 +61,7 @@ def onboarding():
         con = get_db_connection()
         cur = con.cursor()
         cur.execute("""
-            INSERT INTO onboarding (goal, weight, days_per_week) VALUES (?, ?, ?)
+            INSERT INTO users (goal, weight, days_per_week) VALUES (?, ?, ?)
         """, (goal, weight, days_per_week))
         con.commit()
         con.close()
