@@ -1,2 +1,25 @@
 # FirstRep
-I want to challenge myself and learn backend as an aspiring software engineer. This app helps create workout regimens for users and will teach new gym-goers how to work out! Read more of the gritty details in README
+
+FirstRep is a web application that helps new gym-goers generate workout regimens based on simple inputs such as weight, age, height, and goals.
+
+## Tech Stack
+- Python
+- Flask
+- SQLite
+- HTML/CSS
+
+## Current Features
+- Collects user information
+- Stores user data using SQLite
+- Flask backend handling requests
+
+## Future Plans
+- Generate workout programs automatically
+- Improve UI/UX
+- Add more fitness metrics
+
+## Running Locally
+
+1. Clone the repository
+2. Install dependencies
+3. Run: python app.py
