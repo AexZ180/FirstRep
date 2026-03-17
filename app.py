@@ -1,18 +1,17 @@
-
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
 #SQLite database file in project folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://firstrep.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///firstrep.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-#database model for users
+#database model for onboarding submissions
 class Onboarding(db.Model):
-    __tablename__ = "Onboarding"
+    __tablename__ = "onboarding"
 
     id = db.Column(db.Integer, primary_key = True)
     #Might want to extend character count.
@@ -31,12 +30,16 @@ def home():
 @app.route("/onboarding", methods = ["GET", "POST"])
 def onboarding():
     if request.method == "POST":
-        goal = request.form.get("goal","").strip()
+        goal = request.form.get("goal")
         str_weight = request.form.get("weight","").strip()
         str_days_per_week = request.form.get("days_per_week","").strip()
 
+        VALID_GOALS ={"muscle_gain", "weight_loss", "general_fit"}
+
         if not goal:
             return render_template("onboarding.html", error="Please enter a fitness goal.")
+        if goal not in VALID_GOALS:
+            return render_template("onboarding.html", error= "Invalid goal selected.")
         
         try:
             weight = int(str_weight)

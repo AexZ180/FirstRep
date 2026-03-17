@@ -7,17 +7,30 @@
     <h1>Onboarding</h1>
     <p>Welcome to FirstRep! Let's get you set up with your workout plan.</p>
 
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
     <form method = "POST">
-        <label>Goal:</label>
-        <input type = "test" name = "goal">
+        <label>Goal:</label><br>
+
+        <input type = "radio" id = "muscle_gain" name = "goal" value = "muscle_gain" required>
+        <label for = "muscle_gain">Muscle Gain</label><br>
+
+        <input type = "radio" id = "weight_loss" name = "goal" value = "weight_loss" required>
+        <label for = "weight_loss">Weight Loss</label><br>
+
+        <input type = "radio" id = "general_fitness" name = "goal" value = "general_fitness" required>
+        <label for = "general_fitness">General Fitness</label><br>
+
         <br><br>
 
         <label> Days Per Week:</label>
-        <input type = "number" name = "days_per_week" min = "1" max >
+        <input type = "number" id = "days_per_week" name = "days_per_week" min = "1" max = "7" required>
         <br><br>
 
         <label> Weight</label>
-        <input type = "number" name = "weight">
+        <input type = "number" id = "weight" name = "weight" min = "1" required>
         <br><br>
 
         <button type = "submit"> Submit</button>

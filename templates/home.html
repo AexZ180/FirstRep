@@ -6,5 +6,16 @@
 <body>
     <h1>Welcome to FirstRep</h1>
     <p>Your beginner workout coach.</p>
+
+    {% if onboarding %}
+        <h2>Latest Onboarding Info:</h2>
+        <p>Goal: {{ onboarding.goal }}</p>
+        <p>Days Per Week: {{ onboarding.days_per_week }}</p>
+        <p>Weight: {{ onboarding.weight }}</p>
+    {% else %}
+        <p>Let's get you started with your onboarding information!</p>
+        <a href = "{{ url_for('onboarding') }}">Start Onboarding</a>
+    {% endif %}
 </body>
 </html>
+
