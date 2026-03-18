@@ -22,7 +22,7 @@ class Onboarding(db.Model):
 
 
 #workout logic here
-def generate_workout_plan(goal,days_per_week):
+def generate_workout_plan(goal, days_per_week):
     if goal == "muscle_gain":
         if days_per_week == 2:
             return {
@@ -31,12 +31,22 @@ def generate_workout_plan(goal,days_per_week):
                 {
                 "day": "Day 1",
                 "focus": "Full Body A",
-                "exercises": ["Squat","Push-up", "Lat Pulldown", "Plank"]
+                "exercises": [
+                    {"name": "Squat", "link":"https://tenor.com/view/barbellsquats-gymexercisesmen-gif-5038916500459247573"},
+                    {"name": "Push-Up", "link": "https://tenor.com/view/flexiones-basicas-gif-1171585521907987152"}
+                    {"name": "Lat Pulldown", "link": "https://tenor.com/view/pulley-pegada-aberta-gif-4419295319283270407"}
+                    {"name": "Plank", "link": "https://tenor.com/view/plank-gif-17072734464850924730"}
+                    ]
                 },
             {
                 "day": "Day 2",
                 "focus": "Full Body B",
-                "exercises": ["Deadlift", "Dumbbell Bench Press", "Seated Row", "Lunges"]
+                "exercises": [
+                    {"name":"Deadlift", "link":"https://tenor.com/view/gym-gif-6044559530521560855"}
+                    {"name:":"Dumbbell Bench Press", "link":"https://tenor.com/view/supino-reto-gif-11462340842717886275"}
+                    {"name:":"Seated Row", "link":"https://tenor.com/view/seated-row-gif-15624707278175899735"}
+                    {"name:":"Lunges", "link":"https://tenor.com/view/afundo-com-halteres-gif-13923904176810813441"}
+                ]
             }
         ]
     }
@@ -58,6 +68,32 @@ def generate_workout_plan(goal,days_per_week):
                         "day": "Day 3",
                         "focus": "Legs",
                         "exercises": ["Squat", "Romanian Deadlift", "Calf Raise"]
+                    }
+                ]
+            }
+        elif days_per_week == 4:
+            return {
+                "title": "4-Day Muscle Gain Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Push",
+                        "exercises":["Bench Press", "Incline Dumbbell Press", "Shoulder Press", "Tricep Pushdown"]
+                    },
+                    {
+                        "day": "Day 2",
+                        "focus": "Pull",
+                        "exercises": ["Lat Pulldown", "Barbell Row", "Seated Row", "Bicep Curl"]
+                    },
+                    {
+                        "day": "Day 3",
+                        "focus": "Legs",
+                        "exercises":["Squat", "Romanian Deadlift", "Leg Press", "Calf Raise"]
+                    },
+                    {
+                        "day": "Day 4",
+                        "focus": "Upper",
+                        "exercises":["Incline Bench Press", "Lateral Raise", "Face Pull", "Hammer Curl"]
                     }
                 ]
             }
@@ -100,6 +136,33 @@ def generate_workout_plan(goal,days_per_week):
                     }
                 ]
             }
+        elif days_per_week == 4:
+            return {
+                "title": "4-Day Weight Loss Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Upper + Cardio",
+                        "exercises":["Push-Up", "Shoulder Press","Lat Pulldown", "15-20 Min Cardio"]
+                    },
+                    {
+                        "day":"Day 2",
+                        "focus": "Lower + Cardio",
+                        "exercises": ["Squat", "Lunge", "Romanian Deadlift","15-20 Min Cardio"]
+                    },
+                    {
+                        "day": "Day 3",
+                        "focus": "Full Body Circuit",
+                        "exercises":["Goblet Squat", "Push-Up", "Row", "Plank"]
+                    },
+                    {
+                        "day": "Day 4",
+                        "focus": "Low-Impact Conditioning + Core",
+                        "exercises": ["Incline Walk", "Dead Bug", "Mountain Climbers", "Plank"]
+                    }
+                ]
+            }
+
         
     elif goal == "general_fitness":
         if days_per_week == 2:
@@ -136,6 +199,32 @@ def generate_workout_plan(goal,days_per_week):
                         "day" : "Day 3",
                         "focus": "Full Body",
                         "exercises":["Deadlift", "Bench Press", "Lat Pulldown"]
+                    }
+                ]
+            }
+        elif days_per_week == 4:
+            return {
+                "title": "4-Day General Fitness Plan",
+                "days":[
+                    {
+                        "day": "Day 1",
+                        "focus": "Upper Body",
+                        "exercises": ["Push-Up", "Shoulder Press", "Row", "Lat Pulldown"]
+                    },
+                    {
+                        "day": "Day 2",
+                        "focus": "Lower Body",
+                        "exercises":["Squat", "Lunge","Glute Bridge","Calf Raise"]
+                    },
+                    {
+                        "day":"Day 3",
+                        "focus": "Full Body",
+                        "exercises": ["Deadlift", "Bench Press", "Row", "Plank"]
+                    },
+                    {
+                        "day":"Day 4",
+                        "focus": "Conditioning",
+                        "exercises":["Kettlebell Swings", "Step-Ups", "Push-Ups", "Core Work"]
                     }
                 ]
             }

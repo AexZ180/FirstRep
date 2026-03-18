@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Here's Your Workout Plan </title>
+    </head>
+    <body>
+        {% if plan %}
+            <h1> {{ plan.title }} </h1>
+            <h2> Your Onboarding Info: </h2>
+
+            <p> Goal: {{ onboarding.goal }}</p>
+            <p> Days Per Week: {{ onboarding.days_per_week }}</p>
+            <p> Weight: {{ onboarding.weight }}</p>
+        
+            <hr>
+            {% for workout_day in plan.days %}
+                <h2> {{ workout_day.day }} - {{ workout_day.focus }}</h2>
+                <ul>
+                    {% for exercise in workout_day.exercises %}
+                        <li> 
+                            <a href = "{{ exercise.link }}" target= "_blank"> {{ exercise.name }} </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% else %}
+            <p> No workout plan available. </p>
+        {% endif %}
+        <br><br>
+        <a href = "{{ url_for('home') }}"> Back to Home </a>
+        <br>
+        <a href = "{{ url_for('onboarding') }}"> Make Another Plan </a>
+    </body>
+</html>
