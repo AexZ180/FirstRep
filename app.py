@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 import json
+import os
 
 app = Flask(__name__)
 
-#SQLite database file in project folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///firstrep.db"
+database_url = os.environ.get("DATABASE_URL", "sqlite:///firstrep.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
