@@ -9,8 +9,9 @@ https://firstrep-uaym.onrender.com
 - Python
 - Flask
 - SQAlchemy
-- SQLite
+- PostgreSQL
 - HTML/CSS
+- Render
 
 ## Current Features
 - Generate personalized workout plans based on user inputs
