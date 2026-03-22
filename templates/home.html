@@ -14,8 +14,22 @@
         <p>Weight: {{ onboarding.weight }}</p>
     {% else %}
         <p>Let's get you started with your onboarding information!</p>
-        <a href = "{{ url_for('onboarding') }}">Start Onboarding</a>
+        <a href="{{ url_for('onboarding') }}">Start Onboarding</a>
     {% endif %}
+
+    {% if plan %}
+        <h2>Latest Workout Plan</h2>
+        <p><strong>{{ plan.title }}</strong></p>
+
+        {% for day in plan.days[:2] %}
+            <p><strong>{{ day.day }}</strong> - {{ day.focus }}</p>
+        {% endfor %}
+
+        <a href="{{ url_for('workoutplan') }}">View Full Plan →</a>
+    {% endif %}
+
+    <br><br>
+    <a href="{{ url_for('onboarding') }}">Make Another Plan</a>
 </body>
 </html>
 

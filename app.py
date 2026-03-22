@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 app = Flask(__name__)
 
@@ -57,6 +58,14 @@ class Onboarding(db.Model):
     goal = db.Column(db.String(100), nullable = False)
     weight = db.Column(db.Integer, nullable = False)
     days_per_week = db.Column(db.Integer, nullable = False)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+
+class WorkoutPlan(db.Model):
+    __tablename__ = "workout_plan"
+
+    id = db.Column(db.Integer, primary_key = True)
+    onboarding_id = db.Column(db.Integer, db.ForeignKey("onboarding.id"), nullable = False)
+    plan_json = db.Column(db.Text, nullable = False)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
 
 
@@ -275,7 +284,12 @@ def generate_workout_plan(goal, days_per_week):
 @app.route("/")
 def home():
     recent_onboarding = Onboarding.query.order_by(Onboarding.created_at.desc()).first()
-    return render_template("home.html", onboarding = recent_onboarding)
+    recent_saved_plan = WorkoutPlan.query.order_by(WorkoutPlan.created_at.desc()).first()
+
+    plan = None
+    if recent_saved_plan:
+        plan = json.loads(recent_saved_plan.plan_json)
+    return render_template("home.html", onboarding = recent_onboarding, plan = plan)
 
 #route to workout plan page
 @app.route("/workout-plan")
@@ -284,7 +298,13 @@ def workoutplan():
     if not recent_onboarding:
         return redirect(url_for("onboarding"))
     
-    plan = generate_workout_plan(recent_onboarding.goal, recent_onboarding.days_per_week)
+    saved_plan = WorkoutPlan.query.filter_by(onboarding_id=recent_onboarding.id)\
+    .order_by(WorkoutPlan.created_at.desc())\
+    .first()
+
+    if not saved_plan:
+        return redirect(url_for("onboarding"))
+    plan = json.loads(saved_plan.plan_json)
 
     for day in plan["days"]:
         new_exercises = []
@@ -344,6 +364,16 @@ def onboarding():
         )
 
         db.session.add(new_entry)
+        db.session.commit()
+
+        plan = generate_workout_plan(goal,days_per_week)
+
+        saved_plan = WorkoutPlan(
+            onboarding_id = new_entry.id,
+            plan_json = json.dumps(plan)
+        )
+
+        db.session.add(saved_plan)
         db.session.commit()
 
         return redirect(url_for("workoutplan"))
