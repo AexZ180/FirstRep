@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Here's Your Workout Plan </title>
+        <title>Here's Your Workout Plan</title>
     </head>
-    <body>
+    <body style="font-family: Arial; max-width: 700px; margin: auto;">
         {% if plan %}
             <h1> {{ plan.title }} </h1>
             <h2> Your Onboarding Info: </h2>
@@ -14,14 +14,22 @@
         
             <hr>
             {% for workout_day in plan.days %}
-                <h2> {{ workout_day.day }} - {{ workout_day.focus }}</h2>
+                <div style = "border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+                <h2> style = "margin-top: 30px;">
+                    {{ workout_day.day }} - {{ workout_day.focus }}
+                </h2>
                 <ul>
                     {% for exercise in workout_day.exercises %}
-                        <li> 
-                            <a href = "{{ exercise.link }}" target= "_blank"> {{ exercise.name }} </a>
-                        </li>
+                    <li>
+                        <strong> {{ exercise["name"] }} </strong>
+                        {% if exercise.media_url %}
+                            <br>
+                            <img src = "{{ exercise['media_url'] }}" alt = "{{ exercise['name'] }}" width = "200">
+                        {% endif %}
+                    </li>
                     {% endfor %}
                 </ul>
+                </div>
             {% endfor %}
         {% else %}
             <p> No workout plan available. </p>

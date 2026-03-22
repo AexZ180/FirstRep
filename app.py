@@ -9,6 +9,45 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+EXERCISE_LIBRARY = {
+    "push_ups": {"name": "Push-Up", "media_file": "push_up.gif"},
+    "squat": {"name": "Squat", "media_file": "squat.gif"},
+    "lat_pulldown": {"name": "Lat Pulldown", "media_file": None},
+    "plank": {"name": "Plank", "media_file": None},
+    "deadlift": {"name": "Deadlift", "media_file": None},
+    "dumbbell_bench_press": {"name": "Dumbbell Bench Press", "media_file": None},
+    "seated_row": {"name": "Seated Row", "media_file": None},
+    "lunges": {"name": "Lunges", "media_file": None},
+    "bench_press": {"name": "Bench Press", "media_file": None},
+    "shoulder_press": {"name": "Shoulder Press", "media_file": None},
+    "tricep_pushdown": {"name": "Tricep Pushdown", "media_file": None},
+    "bicep_curl": {"name": "Bicep Curl", "media_file": None},
+    "romanian_deadlift": {"name": "Romanian Deadlift", "media_file": None},
+    "calf_raise": {"name": "Calf Raise", "media_file": None},
+    "incline_dumbbell_press": {"name": "Incline Dumbbell Press", "media_file": None},
+    "dumbbell_press": {"name": "Dumbbell Press", "media_file": None},
+    "hammer_curl": {"name": "Hammer Curl", "media_file": None},
+    "goblet_squat": {"name": "Goblet Squat", "media_file": None},
+    "row": {"name": "Row", "media_file": None},
+    "dead_bug": {"name": "Dead Bug", "media_file": None},
+    "step_up": {"name": "Step-Up", "media_file": None},
+    "mountain_climbers": {"name": "Mountain Climbers", "media_file": None},
+    "glute_bridge": {"name": "Glute Bridge", "media_file": None},
+    "bodyweight_squat": {"name": "Bodyweight Squat", "media_file": None},
+    "kettlebell_swings": {"name": "Kettlebell Swings", "media_file": None},
+    "barbell_row": {"name": "Barbell Row", "media_file": None},
+    "leg_press": {"name": "Leg Press", "media_file": None},
+    "incline_bench_press": {"name": "Incline Bench Press", "media_file": None},
+    "lateral_raise": {"name": "Lateral Raise", "media_file": None},
+    "face_pull": {"name": "Face Pull", "media_file": None},
+    "15_min_walk": {"name": "15-Min Walk", "media_file": None},
+    "20_min_walk": {"name": "20-Min Walk", "media_file": None},
+    "15_20_min_cardio": {"name": "15-20 Min Cardio", "media_file": None},
+    "15_min_bike": {"name": "15-Min Bike", "media_file": None},
+    "incline_walk": {"name": "Incline Walk", "media_file": None},
+    "core_work": {"name": "Core Work", "media_file": None},
+}
+
 #database model for onboarding submissions
 class Onboarding(db.Model):
     __tablename__ = "onboarding"
@@ -31,22 +70,12 @@ def generate_workout_plan(goal, days_per_week):
                 {
                 "day": "Day 1",
                 "focus": "Full Body A",
-                "exercises": [
-                    {"name": "Squat", "link":"https://tenor.com/view/barbellsquats-gymexercisesmen-gif-5038916500459247573"},
-                    {"name": "Push-Up", "link": "https://tenor.com/view/flexiones-basicas-gif-1171585521907987152"}
-                    {"name": "Lat Pulldown", "link": "https://tenor.com/view/pulley-pegada-aberta-gif-4419295319283270407"}
-                    {"name": "Plank", "link": "https://tenor.com/view/plank-gif-17072734464850924730"}
-                    ]
+                "exercises": ["squat", "push_ups", "lat_pulldown", "plank"]
                 },
             {
                 "day": "Day 2",
                 "focus": "Full Body B",
-                "exercises": [
-                    {"name":"Deadlift", "link":"https://tenor.com/view/gym-gif-6044559530521560855"}
-                    {"name:":"Dumbbell Bench Press", "link":"https://tenor.com/view/supino-reto-gif-11462340842717886275"}
-                    {"name:":"Seated Row", "link":"https://tenor.com/view/seated-row-gif-15624707278175899735"}
-                    {"name:":"Lunges", "link":"https://tenor.com/view/afundo-com-halteres-gif-13923904176810813441"}
-                ]
+                "exercises": ["deadlift", "dumbbell_bench_press", "seated_row", "lunges"]
             }
         ]
     }
@@ -57,17 +86,17 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Push",
-                        "exercises": ["Bench Press", "Shoulder Press", "Tricep Pushdown"]
+                        "exercises": ["bench_press", "shoulder_press", "tricep_pushdown"]
                     },
                     {
                         "day": "Day 2",
                         "focus": "Pull",
-                        "exercises": ["Lat Pulldown", "Seated Row", "Bicep Curl"]
+                        "exercises": ["lat_pulldown", "seated_row", "bicep_curl"]
                     },
                     {
                         "day": "Day 3",
                         "focus": "Legs",
-                        "exercises": ["Squat", "Romanian Deadlift", "Calf Raise"]
+                        "exercises": ["squat", "romanian_deadlift", "calf_raise"]
                     }
                 ]
             }
@@ -78,22 +107,22 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Push",
-                        "exercises":["Bench Press", "Incline Dumbbell Press", "Shoulder Press", "Tricep Pushdown"]
+                        "exercises":["bench_press", "incline_dumbbell_press", "shoulder_press", "tricep_pushdown"]
                     },
                     {
                         "day": "Day 2",
                         "focus": "Pull",
-                        "exercises": ["Lat Pulldown", "Barbell Row", "Seated Row", "Bicep Curl"]
+                        "exercises": ["lat_pulldown", "barbell_row", "seated_row", "bicep_curl"]
                     },
                     {
                         "day": "Day 3",
                         "focus": "Legs",
-                        "exercises":["Squat", "Romanian Deadlift", "Leg Press", "Calf Raise"]
+                        "exercises":["squat", "romanian_deadlift", "leg_press", "calf_raise"]
                     },
                     {
                         "day": "Day 4",
                         "focus": "Upper",
-                        "exercises":["Incline Bench Press", "Lateral Raise", "Face Pull", "Hammer Curl"]
+                        "exercises":["incline_bench_press", "lateral_raise", "face_pull", "hammer_curl"]
                     }
                 ]
             }
@@ -106,12 +135,12 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Full Body + Cardio",
-                        "exercises": ["Goblet Squat", "Push-Up", "Row", "15-Min Walk"]
+                        "exercises": ["goblet_squat", "push_ups", "row", "15_min_walk"]
                     },
                     {
                         "day" : "Day 2",
                         "focus": "Full Body + Cardio",
-                        "exercises":["Lunge", "Dumbbell Press", "Lat Pulldown", "15-Min Bike"]
+                        "exercises":["lunges", "dumbbell_press", "lat_pulldown", "15_min_bike"]
                     }
                 ]
             }
@@ -122,17 +151,17 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Upper Body",
-                        "exercises": ["Push-Up", "Shoulder Press", "Lat Pulldown"]
+                        "exercises": ["push_ups", "shoulder_press", "lat_pulldown"]
                     },
                     {
                         "day": "Day 2",
                         "focus": "Lower Body + Cardio",
-                        "exercises": ["Squat", "Lunge", "20-Min Walk"]                        
+                        "exercises": ["squat", "lunges", "20_min_walk"]                        
                     },
                     {
                         "day": "Day 3",
                         "focus": "Full Body",
-                        "exercises": ["Deadlift", "Bench Press", "Row"]
+                        "exercises": ["deadlift", "bench_press", "row"]
                     }
                 ]
             }
@@ -143,22 +172,22 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Upper + Cardio",
-                        "exercises":["Push-Up", "Shoulder Press","Lat Pulldown", "15-20 Min Cardio"]
+                        "exercises":["push_ups", "shoulder_press","lat_pulldown", "15_20_min_cardio"]
                     },
                     {
                         "day":"Day 2",
                         "focus": "Lower + Cardio",
-                        "exercises": ["Squat", "Lunge", "Romanian Deadlift","15-20 Min Cardio"]
+                        "exercises": ["squat", "lunges", "romanian_deadlift","15_20_min_cardio"]
                     },
                     {
                         "day": "Day 3",
                         "focus": "Full Body Circuit",
-                        "exercises":["Goblet Squat", "Push-Up", "Row", "Plank"]
+                        "exercises":["goblet_squat", "push_ups", "row", "plank"]
                     },
                     {
                         "day": "Day 4",
                         "focus": "Low-Impact Conditioning + Core",
-                        "exercises": ["Incline Walk", "Dead Bug", "Mountain Climbers", "Plank"]
+                        "exercises": ["incline_walk", "dead_bug", "mountain_climbers", "plank"]
                     }
                 ]
             }
@@ -172,12 +201,12 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Full Body A",
-                        "exercises":["Bodyweight Squat", "Push-Up", "Row", "Plank"]
+                        "exercises":["bodyweight_squat", "push_ups", "row", "plank"]
                     },
                     {
                         "day": "Day 2",
                         "focus": "Full Body B",
-                        "exercises": ["Step-Up", "Shoulder Press", "Lat Pulldown", "Dead Bug"]
+                        "exercises": ["step_up", "shoulder_press", "lat_pulldown", "dead_bug"]
                     }
                 ]
             }
@@ -188,17 +217,17 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Upper Body",
-                        "exercises":["Push-Up","Shoulder Press", "Row"]
+                        "exercises":["push_ups","shoulder_press", "row"]
                     },
                     {
                         "day": "Day 2",
                         "focus": "Lower Body",
-                        "exercises": ["Squat", "Lunge", "Glute Bridge"]
+                        "exercises": ["squat", "lunges", "glute_bridge"]
                     },
                     {
                         "day" : "Day 3",
                         "focus": "Full Body",
-                        "exercises":["Deadlift", "Bench Press", "Lat Pulldown"]
+                        "exercises":["deadlift", "bench_press", "lat_pulldown"]
                     }
                 ]
             }
@@ -209,22 +238,22 @@ def generate_workout_plan(goal, days_per_week):
                     {
                         "day": "Day 1",
                         "focus": "Upper Body",
-                        "exercises": ["Push-Up", "Shoulder Press", "Row", "Lat Pulldown"]
+                        "exercises": ["push_ups", "shoulder_press", "row", "lat_pulldown"]
                     },
                     {
                         "day": "Day 2",
                         "focus": "Lower Body",
-                        "exercises":["Squat", "Lunge","Glute Bridge","Calf Raise"]
+                        "exercises":["squat", "lunges","glute_bridge","calf_raise"]
                     },
                     {
                         "day":"Day 3",
                         "focus": "Full Body",
-                        "exercises": ["Deadlift", "Bench Press", "Row", "Plank"]
+                        "exercises": ["deadlift", "bench_press", "row", "plank"]
                     },
                     {
                         "day":"Day 4",
                         "focus": "Conditioning",
-                        "exercises":["Kettlebell Swings", "Step-Ups", "Push-Ups", "Core Work"]
+                        "exercises":["kettlebell_swings", "step_up", "push_ups", "core_work"]
                     }
                 ]
             }
@@ -235,7 +264,7 @@ def generate_workout_plan(goal, days_per_week):
             {
                 "day": "Day 1",
                 "focus": "Full Body",
-                "exercises": ["Squat", "Push-Up", "Row", "Plank"]
+                "exercises": ["squat", "push_ups", "row", "plank"]
             }
         ]
     }
@@ -256,6 +285,25 @@ def workoutplan():
         return redirect(url_for("onboarding"))
     
     plan = generate_workout_plan(recent_onboarding.goal, recent_onboarding.days_per_week)
+
+    for day in plan["days"]:
+        new_exercises = []
+        for ex in day["exercises"]:
+            if ex not in EXERCISE_LIBRARY:
+                raise ValueError(f"Invalid exercise key: {ex}")
+
+            exercise_data = EXERCISE_LIBRARY[ex].copy()
+
+            media_file = exercise_data.get("media_file")
+
+            if media_file:
+                exercise_data["media_url"] = url_for("static", filename=f"gifs/{media_file}")
+            else:
+                exercise_data["media_url"] = ""
+
+            new_exercises.append(exercise_data)
+
+        day["exercises"] = new_exercises
     return render_template("workout_plan.html", plan = plan, onboarding = recent_onboarding)
 
 
