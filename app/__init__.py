@@ -1,8 +1,7 @@
 import os
 from flask import Flask
 from .extensions import db
-from app.routes.register import auth_bp
-app.register_blueprint(auth_bp)
+
 
 def create_app():
     app = Flask(
@@ -11,7 +10,7 @@ def create_app():
         static_folder="../static"
     )
 
-    app.config["SECRET_KEY"] = os.environ.get("SECRETE_KEY", "dev-secret-key")
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 
     database_url = os.environ.get("DATABASE_URL", "sqlite:///firstrep.db")
 
@@ -25,9 +24,11 @@ def create_app():
 
     db.init_app(app)
 
+    from app.routes.auth import auth_bp
     from app.routes.main import main_bp
     from app.routes.onboarding import onboarding_bp
 
+    app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(onboarding_bp)
 
