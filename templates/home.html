@@ -1,40 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FirstRep</title>
 </head>
 <body>
-    <h1>Welcome to FirstRep</h1>
-    <p>Your beginner workout coach.</p>
+    <div class="container">
+        <div class="card">
+            <h1>Welcome to FirstRep</h1>
+            <p class="small-text">Your beginner workout coach.</p>
+        </div>
 
-    {% if onboarding %}
-        <h2>Latest Onboarding Info:</h2>
-        <p>Goal: {{ onboarding.goal }}</p>
-        <p>Days Per Week: {{ onboarding.days_per_week }}</p>
-        <p>Weight: {{ onboarding.weight }}</p>
-    {% else %}
-        <p>Let's get you started with your onboarding information!</p>
-        <a href="{{ url_for('onboarding.onboarding') }}">Start Onboarding</a>
-    {% endif %}
+        {% if onboarding %}
+            <div class="card">
+                <h2>Your Latest Preferences</h2>
+                <p><strong>Goal:</strong> {{ onboarding.goal }}</p>
+                <p><strong>Days Per Week:</strong> {{ onboarding.days_per_week }}</p>
+                <p><strong>Weight:</strong> {{ onboarding.weight }}</p>
+            </div>
+        {% else %}
+            <div class="card">
+                <h2>Get Started</h2>
+                <p>Let’s build your first workout plan.</p>
+                <a href="{{ url_for('onboarding.onboarding') }}">Start Onboarding</a>
+            </div>
+        {% endif %}
 
-    {% if plan %}
-        <h2>Latest Workout Plan</h2>
-        <p><strong>{{ plan.title }}</strong></p>
+        {% if plan %}
+            <div class="card">
+                <h2>Latest Workout Plan</h2>
+                <p><strong>{{ plan.title }}</strong></p>
 
-        {% for day in plan.days[:2] %}
-            <p><strong>{{ day.day }}</strong> - {{ day.focus }}</p>
-        {% endfor %}
+                {% for day in plan.days[:2] %}
+                    <div class="day-card">
+                        <p><strong>{{ day.day }}</strong></p>
+                        <p>{{ day.focus }}</p>
+                    </div>
+                {% endfor %}
 
-        <a href="{{ url_for('main.workoutplan') }}">View Full Plan →</a>
-    {% endif %}
+                <a href="{{ url_for('main.workoutplan') }}">View Full Plan →</a>
+            </div>
+        {% endif %}
 
-    <br><br>
-    <a href="{{ url_for('onboarding.onboarding') }}">Make Another Plan</a>
+        <div class="card">
+            <h2>Actions</h2>
+            <p><a href="{{ url_for('onboarding.onboarding') }}">Make Another Plan</a></p>
 
-    <br><br>
-    <form action="{{ url_for('auth.logout') }}" method="get">
-    <button type="submit">Logout</button>
-</form>
+            <form action="{{ url_for('auth.logout') }}" method="get">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
 
