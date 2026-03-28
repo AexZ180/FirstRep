@@ -30,6 +30,11 @@
 
     <br><br>
     <a href="{{ url_for('onboarding.onboarding') }}">Make Another Plan</a>
+
+    <br><br>
+    <form action="{{ url_for('auth.logout') }}" method="get">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>
 
