@@ -13,6 +13,6 @@ def app():
 def client(app):
     return app.test_client()
 
-def test_home_route(client):
-    response = client.get("/")
+def test_login_route(client):
+    response = client.get("/login")
     assert response.status_code in (200, 302)
