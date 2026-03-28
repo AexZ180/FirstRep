@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, render_template, request, url_for, redirect
+from flask import Blueprint, render_template, request, url_for, redirect, session
 
 from app.extensions import db
 from app.models import Onboarding, WorkoutPlan
@@ -9,6 +9,10 @@ onboarding_bp = Blueprint("onboarding", __name__)
 
 @onboarding_bp.route("/onboarding", methods=["GET", "POST"])
 def onboarding():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("auth.login"))
+
     if request.method == "POST":
         goal = request.form.get("goal")
         str_weight = request.form.get("weight", "").strip()
@@ -44,7 +48,8 @@ def onboarding():
         new_entry = Onboarding(
             goal=goal,
             weight=weight,
-            days_per_week=days_per_week
+            days_per_week=days_per_week,
+            user_id=user_id
         )
 
         db.session.add(new_entry)

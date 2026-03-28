@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, render_template, url_for, redirect
+from flask import Blueprint, render_template, url_for, redirect, session
 
 from app.data.exercise_library import EXERCISE_LIBRARY
 from app.models import Onboarding, WorkoutPlan
@@ -8,32 +8,53 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
-    recent_onboarding = Onboarding.query.order_by(Onboarding.created_at.desc()).first()
-    recent_saved_plan = WorkoutPlan.query.order_by(WorkoutPlan.created_at.desc()).first()
+    user_id = session.get("user_id")
 
+    if not user_id:
+        return redirect(url_for("auth.login"))
+    
+    user_onboarding = (
+        Onboarding.query.filter_by(user_id = user_id)
+        .order_by(Onboarding.created_at.desc())
+        .first()
+    )
+    saved_plan = None
     plan = None
-    if recent_saved_plan:
-        plan = json.loads(recent_saved_plan.plan_json)
+    if user_onboarding:
+        saved_plan = (
+            WorkoutPlan.query.filter_by(onboarding_id=user_onboarding.id)
+            .order_by(WorkoutPlan.created_at.desc())
+            .first()
+        )
+    if saved_plan:
+        plan = json.loads(saved_plan.plan_json)
 
-    return render_template("home.html", onboarding=recent_onboarding, plan=plan)
+    return render_template("home.html", onboarding=user_onboarding, plan=plan)
 
 
 @main_bp.route("/workout-plan")
 def workoutplan():
-    recent_onboarding = Onboarding.query.order_by(Onboarding.created_at.desc()).first()
-    if not recent_onboarding:
-        return redirect(url_for("onboarding.onboarding"))
-
-    saved_plan = (
-        WorkoutPlan.query.filter_by(onboarding_id=recent_onboarding.id)
-        .order_by(WorkoutPlan.created_at.desc())
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("auth.login"))
+    
+    user_onboarding = (
+        Onboarding.query.filter_by(user_id = user_id)
+        .order_by(Onboarding.created_at.desc())
         .first()
     )
 
+    if not user_onboarding:
+        return redirect(url_for("onboarding.onboarding"))
+    saved_plan = (
+        WorkoutPlan.query.filter_by(onboarding_id = user_onboarding.id)
+        .order_by(WorkoutPlan.created_at.desc())
+        .first()
+    )
     if not saved_plan:
         return redirect(url_for("onboarding.onboarding"))
-
     plan = json.loads(saved_plan.plan_json)
+
 
     for day in plan["days"]:
         new_exercises = []
@@ -53,4 +74,4 @@ def workoutplan():
 
         day["exercises"] = new_exercises
 
-    return render_template("workout_plan.html", plan=plan, onboarding=recent_onboarding)
+    return render_template("workout_plan.html", plan=plan, onboarding=user_onboarding)

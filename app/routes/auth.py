@@ -65,7 +65,7 @@ def login():
             return render_template("login.html", error="No account associated with that email.")
         
         if not check_password_hash(user.password_hash, password_raw):
-            return render_template("login.html", error = "Incorrect passowrd.")
+            return render_template("login.html", error = "Incorrect password.")
         
         session["user_id"] = user.id
         return redirect(url_for("main.home"))
