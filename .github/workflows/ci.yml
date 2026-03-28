@@ -23,6 +23,9 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=firstrep" >> $GITHUB_ENV
+
       - name: Run tests
         run: |
           pytest
