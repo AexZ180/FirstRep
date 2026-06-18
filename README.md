@@ -1,33 +1,63 @@
 # FirstRep
 
-FirstRep is a full-stack web application that generates personalized workout plans based on user inputs such as fitness goals, weight, and training frequency. The application persists workout plans and enhances them with exercise media for a more interactive experience.
+FirstRep is a full-stack fitness web application that generates personalized beginner workout plans based on a user's fitness goal, weight, and preferred training frequency. Users can create an account, complete onboarding, generate a workout plan, and return later to view their saved plan.
 
-#Live Demo
-https://firstrep-uaym.onrender.com
+Live Demo: https://firstrep-uaym.onrender.com
 
 ## Tech Stack
+
 - Python
 - Flask
-- SQAlchemy
+- SQLAlchemy
 - PostgreSQL
 - HTML/CSS
+- Jinja
 - Render
 
-## Current Features
-- Generate personalized workout plans based on user inputs
-- Persist workout plans using a relational database
-- Retrieve and display previously generated plans
-- Integrate exercise GIFs for visual guidance
-- Multi-page application with dynamic routing
+## Features
 
-## Future Plans
-- User authentication and personalized accounts
-- Improved UI/UX design
-- More advanced workout generation logic
-- Expanded exercise library and media
+- User registration and login
+- Personalized onboarding flow
+- Workout plan generation based on user inputs
+- Persistent storage of user profiles, onboarding data, and workout plans
+- Saved workout plan retrieval
+- Exercise media integration for visual guidance
+- Multi-page Flask application with dynamic routing
+- Deployed with Render and PostgreSQL
+
+## How It Works
+
+1. A user creates an account or logs in.
+2. The user completes an onboarding form with their goal, weight, and training frequency.
+3. FirstRep generates a structured workout plan based on the user's inputs.
+4. The generated plan is saved to the database.
+5. The user can return later and view their most recent saved workout plan.
+
+## Project Motivation
+
+Many beginners struggle with knowing what to do when they first start going to the gym. FirstRep is designed to reduce that uncertainty by giving users a simple, personalized starting point. The goal is not to replace a trainer, but to help new gym-goers build confidence with an accessible workout plan.
+
+## Current Limitations
+
+- Workout generation is currently rule-based.
+- Exercise selection is limited to a beginner-focused library.
+- UI/UX is functional but still being improved.
+- User accounts currently store the most recent onboarding and workout plan.
+
+## Future Improvements
+
+- Add more advanced workout generation logic
+- Support equipment constraints such as home workouts, dumbbells only, or no machines
+- Expand the exercise library
+- Improve UI/UX and mobile responsiveness
+- Add user dashboards and workout history
+- Add profile editing and account management
+- Add API documentation and tests
 
 ## Running Locally
 
-1. Clone the repository
-2. Install dependencies
-3. Run: python app.py
+Clone the repository:
+
+```bash
+git clone <your-repo-url>
+cd FirstRep
