@@ -59,10 +59,14 @@ def workoutplan():
     for day in plan["days"]:
         new_exercises = []
         for ex in day["exercises"]:
-            if ex not in EXERCISE_LIBRARY:
-                raise ValueError(f"Invalid exercise key: {ex}")
+            exercise_key = ex if isinstance(ex, str) else ex.get("key")
 
-            exercise_data = EXERCISE_LIBRARY[ex].copy()
+            if exercise_key not in EXERCISE_LIBRARY:
+                raise ValueError(f"Invalid exercise key: {exercise_key}")
+
+            exercise_data = EXERCISE_LIBRARY[exercise_key].copy()
+            if isinstance(ex, dict):
+                exercise_data.update(ex)
             media_file = exercise_data.get("media_file")
 
             if media_file:

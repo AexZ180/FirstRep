@@ -22,6 +22,16 @@
                     {% for exercise in workout_day.exercises %}
                     <li>
                         <strong> {{ exercise["name"] }} </strong>
+                        {% if exercise.sets and exercise.reps and exercise.rest %}
+                            <p>
+                                {{ exercise.sets }} sets |
+                                {{ exercise.reps }} reps |
+                                {{ exercise.rest }} rest
+                            </p>
+                        {% endif %}
+                        {% if exercise.notes %}
+                            <p>{{ exercise.notes }}</p>
+                        {% endif %}
                         {% if exercise.media_url %}
                             <br>
                             <img src = "{{ exercise['media_url'] }}" alt = "{{ exercise['name'] }}" width = "200">
