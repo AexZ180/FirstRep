@@ -20,9 +20,11 @@ def create_app(test_config=None):
     from app.routes.auth import auth_bp
     from app.routes.main import main_bp
     from app.routes.onboarding import onboarding_bp
+    from app.routes.workouts import workouts_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(onboarding_bp)
+    app.register_blueprint(workouts_bp)
 
     return app

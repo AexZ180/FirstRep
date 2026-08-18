@@ -45,6 +45,27 @@
         {% endif %}
 
         <div class="card">
+            <h2>Progress</h2>
+            <p><strong>{{ completed_count }}</strong> completed workouts</p>
+
+            {% if recent_workouts %}
+                <h3>Recent activity</h3>
+                <ul>
+                    {% for workout in recent_workouts %}
+                        <li>
+                            <a href="{{ url_for('workouts.detail', workout_id=workout.id) }}">
+                                Plan day {{ workout.day_index + 1 }}
+                            </a>
+                            · {{ workout.completed_at.strftime('%b %d, %Y') }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Complete your first workout to begin tracking progress.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
             <h2>Actions</h2>
             <p><a href="{{ url_for('onboarding.onboarding') }}">Make Another Plan</a></p>
 

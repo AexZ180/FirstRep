@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, url_for, redirect, session
 
 from app.auth_utils import login_required
 from app.data.exercise_library import EXERCISE_LIBRARY
-from app.models import Onboarding, WorkoutPlan
+from app.models import Onboarding, WorkoutPlan, WorkoutSession
 
 main_bp = Blueprint("main", __name__)
 
@@ -28,7 +28,21 @@ def home():
     if saved_plan:
         plan = json.loads(saved_plan.plan_json)
 
-    return render_template("home.html", onboarding=user_onboarding, plan=plan)
+    completed_workouts = WorkoutSession.query.filter(
+        WorkoutSession.user_id == user_id,
+        WorkoutSession.completed_at.isnot(None),
+    )
+    recent_workouts = completed_workouts.order_by(
+        WorkoutSession.completed_at.desc()
+    ).limit(3).all()
+
+    return render_template(
+        "home.html",
+        onboarding=user_onboarding,
+        plan=plan,
+        completed_count=completed_workouts.count(),
+        recent_workouts=recent_workouts,
+    )
 
 
 @main_bp.route("/workout-plan")
@@ -76,4 +90,9 @@ def workoutplan():
 
         day["exercises"] = new_exercises
 
-    return render_template("workout_plan.html", plan=plan, onboarding=user_onboarding)
+    return render_template(
+        "workout_plan.html",
+        plan=plan,
+        onboarding=user_onboarding,
+        workout_plan=saved_plan,
+    )
