@@ -2,16 +2,16 @@ import json
 from flask import Blueprint, render_template, request, url_for, redirect, session
 
 from app.extensions import db
+from app.auth_utils import login_required
 from app.models import Onboarding, WorkoutPlan
 from app.services.workout_generator import generate_workout_plan
 
 onboarding_bp = Blueprint("onboarding", __name__)
 
 @onboarding_bp.route("/onboarding", methods=["GET", "POST"])
+@login_required
 def onboarding():
     user_id = session.get("user_id")
-    if not user_id:
-        return redirect(url_for("auth.login"))
 
     if request.method == "POST":
         goal = request.form.get("goal")
@@ -34,10 +34,10 @@ def onboarding():
 
         try:
             days_per_week = int(str_days_per_week)
-            if days_per_week < 1 or days_per_week > 7:
+            if days_per_week < 2 or days_per_week > 4:
                 return render_template(
                     "onboarding.html",
-                    error="Please enter a number between 1 and 7 for number of days per week."
+                    error="Please choose between 2 and 4 training days per week."
                 )
         except ValueError:
             return render_template(

@@ -1,17 +1,16 @@
 import json
 from flask import Blueprint, render_template, url_for, redirect, session
 
+from app.auth_utils import login_required
 from app.data.exercise_library import EXERCISE_LIBRARY
 from app.models import Onboarding, WorkoutPlan
 
 main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
+@login_required
 def home():
     user_id = session.get("user_id")
-
-    if not user_id:
-        return redirect(url_for("auth.login"))
     
     user_onboarding = (
         Onboarding.query.filter_by(user_id = user_id)
@@ -33,10 +32,9 @@ def home():
 
 
 @main_bp.route("/workout-plan")
+@login_required
 def workoutplan():
     user_id = session.get("user_id")
-    if not user_id:
-        return redirect(url_for("auth.login"))
     
     user_onboarding = (
         Onboarding.query.filter_by(user_id = user_id)

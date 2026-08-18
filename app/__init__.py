@@ -1,28 +1,21 @@
-import os
 from flask import Flask
-from .extensions import db
+from .config import Config
+from .extensions import db, migrate
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(
         __name__,
         template_folder="../templates",
         static_folder="../static"
     )
 
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
-
-    database_url = os.environ.get("DATABASE_URL", "sqlite:///firstrep.db")
-
-    if database_url.startswith("postgres://"):
-        database_url = database_url.replace("postgres://", "postgresql+psycopg://", 1)
-    elif database_url.startswith("postgresql://"):
-        database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config.from_object(Config)
+    if test_config:
+        app.config.update(test_config)
 
     db.init_app(app)
+    migrate.init_app(app, db)
 
     from app.routes.auth import auth_bp
     from app.routes.main import main_bp
@@ -31,8 +24,5 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(onboarding_bp)
-
-    with app.app_context():
-        db.create_all()
 
     return app

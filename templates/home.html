@@ -48,7 +48,7 @@
             <h2>Actions</h2>
             <p><a href="{{ url_for('onboarding.onboarding') }}">Make Another Plan</a></p>
 
-            <form action="{{ url_for('auth.logout') }}" method="get">
+            <form action="{{ url_for('auth.logout') }}" method="post">
                 <button type="submit">Logout</button>
             </form>
         </div>
